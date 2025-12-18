@@ -1,0 +1,24 @@
+{
+  "name": "ttops_node_db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "init-db.js",
+  "scripts": {
+    "start": "node init-db.js",
+    "dev": "nodemon init-db.js",
+    "test": "node test-api.js"
+  },
+  "keywords": [],
+  "author": "Alejandro Barrera <alejandro91dark@hotmail.es>",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.13.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mysql2": "^3.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
