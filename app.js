@@ -4,9 +4,13 @@ const authRoutes = require("./routes/auth");
 const usuariosRoutes = require("./routes/usuarios");
 const productosRoutes = require("./routes/productos");
 const estadisticasRoutes = require("./routes/estadisticas");
+const path = require("path");
 
 const app = express();
 app.use(express.json());
+
+// Servir archivos estáticos (imágenes)
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Middleware de logging
 app.use((req, res, next) => {

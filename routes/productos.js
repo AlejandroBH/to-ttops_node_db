@@ -3,6 +3,7 @@ const express = require("express");
 const db = require("../utils/database");
 const { validarProducto } = require("../utils/validation");
 const verifyToken = require("../middleware/authMiddleware");
+const upload = require("../middleware/uploadMiddleware");
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ router.get("/", async (req, res) => {
     } = req.query;
 
     let sql = `
-      SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, p.activo,
+      SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, p.activo, p.imagen_url,
              c.nombre AS categoria
       FROM productos p
       LEFT JOIN categorias c ON p.categoria_id = c.id
@@ -63,8 +64,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST /productos - Crear producto
-router.post("/", verifyToken, async (req, res) => {
+// POST /productos - Crear producto (soporta subida de imagen)
+router.post("/", verifyToken, upload.single("imagen"), async (req, res) => {
   try {
     const errores = validarProducto(req.body);
     if (errores.length > 0) {
@@ -75,10 +76,22 @@ router.post("/", verifyToken, async (req, res) => {
     }
 
     const { nombre, precio, descripcion, stock, categoria_id } = req.body;
+    let imagen_url = null;
+
+    if (req.file) {
+      imagen_url = `/uploads/${req.file.filename}`;
+    }
 
     const resultado = await db.execute(
-      "INSERT INTO productos (nombre, descripcion, precio, stock, categoria_id, activo, fecha_creacion) VALUES (?, ?, ?, ?, ?, true, NOW())",
-      [nombre, descripcion || null, precio, stock || 0, categoria_id || null]
+      "INSERT INTO productos (nombre, descripcion, precio, stock, categoria_id, imagen_url, activo, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, true, NOW())",
+      [
+        nombre,
+        descripcion || null,
+        precio,
+        stock || 0,
+        categoria_id || null,
+        imagen_url,
+      ]
     );
 
     res.status(201).json({
@@ -90,6 +103,7 @@ router.post("/", verifyToken, async (req, res) => {
         precio,
         stock: stock || 0,
         categoria_id,
+        imagen_url,
       },
     });
   } catch (error) {
