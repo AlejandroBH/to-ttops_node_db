@@ -14,6 +14,12 @@ function validarUsuario(datos) {
     errores.push("Email debe tener formato válido");
   }
 
+  if (!datos.password || typeof datos.password !== "string") {
+    errores.push("Password es requerido y debe ser texto");
+  } else if (datos.password.length < 6 || datos.password.length > 12) {
+    errores.push("Password debe tener entre 6 y 12 caracteres");
+  }
+
   if (datos.edad !== undefined) {
     const edad = parseInt(datos.edad);
     if (isNaN(edad) || edad < 0 || edad > 150) {
