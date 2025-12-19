@@ -1,4 +1,5 @@
 -- init-database.sql - Inicialización de la base de datos
+DROP DATABASE IF EXISTS ttops_node_db;
 CREATE DATABASE IF NOT EXISTS ttops_node_db;
 USE ttops_node_db;
 
@@ -32,6 +33,7 @@ CREATE TABLE IF NOT EXISTS productos (
   precio DECIMAL(10,2) NOT NULL,
   stock INT DEFAULT 0,
   categoria_id INT,
+  imagen_url VARCHAR(255),
   activo BOOLEAN DEFAULT TRUE,
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
