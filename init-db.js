@@ -1,4 +1,5 @@
 // init-db.js - Script para inicializar la base de datos
+require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
 const mysql = require("mysql2/promise");
@@ -22,20 +23,20 @@ async function inicializarBaseDatos() {
     const sql = fs.readFileSync(sqlPath, "utf8");
 
     // Ejecutar SQL
-    await connection.execute(sql);
+    await connection.query(sql);
 
     console.log("✅ Base de datos inicializada correctamente");
 
     // Verificar datos
-    await connection.execute("USE ttops_node_db");
+    await connection.query("USE ttops_node_db");
 
-    const [usuarios] = await connection.execute(
+    const [usuarios] = await connection.query(
       "SELECT COUNT(*) AS total FROM usuarios"
     );
-    const [productos] = await connection.execute(
+    const [productos] = await connection.query(
       "SELECT COUNT(*) AS total FROM productos"
     );
-    const [categorias] = await connection.execute(
+    const [categorias] = await connection.query(
       "SELECT COUNT(*) AS total FROM categorias"
     );
 
