@@ -9,9 +9,7 @@ const dbConfig = {
     database: process.env.DB_NAME || "ttops_node_db",
     port: process.env.DB_PORT || 3306,
     // Configuración adicional para producción
-    acquireTimeout: 60000,
-    timeout: 60000,
-    reconnect: true,
+    connectTimeout: 60000,
   },
 
   postgresql: {
