@@ -1,7 +1,10 @@
 // app.js - API completa con base de datos
 const express = require("express");
+const bcrypt = require('bcryptjs');
 const db = require("./utils/database");
 const { validarUsuario, validarProducto } = require("./utils/validation");
+const authRoutes = require("./routes/auth");
+const verifyToken = require("./middleware/authMiddleware");
 
 const app = express();
 app.use(express.json());
@@ -11,6 +14,9 @@ app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   next();
 });
+
+// Rutas de autenticación
+app.use("/auth", authRoutes);
 
 // RUTAS DE USUARIOS
 
@@ -76,11 +82,17 @@ app.post("/usuarios", async (req, res) => {
       });
     }
 
-    const { nombre, email, edad } = req.body;
+    const { nombre, email, password, edad } = req.body;
+
+    // Hash del password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    console.log(hashedPassword);
+
 
     const resultado = await db.execute(
-      "INSERT INTO usuarios (nombre, email, edad, activo, fecha_registro) VALUES (?, ?, ?, true, NOW())",
-      [nombre, email, edad || null]
+      "INSERT INTO usuarios (nombre, email, password, edad, activo, fecha_registro) VALUES (?,?,?,?,true, NOW())",
+      [nombre, email, hashedPassword, edad || null]
     );
 
     res.status(201).json({
@@ -218,7 +230,7 @@ app.get("/productos", async (req, res) => {
 });
 
 // POST /productos - Crear producto
-app.post("/productos", async (req, res) => {
+app.post("/productos", verifyToken, async (req, res) => {
   try {
     const errores = validarProducto(req.body);
     if (errores.length > 0) {
@@ -253,7 +265,7 @@ app.post("/productos", async (req, res) => {
 });
 
 // RUTA DE ESTADÍSTICAS
-app.get("/estadisticas", async (req, res) => {
+app.get("/estadisticas", verifyToken, async (req, res) => {
   try {
     // Estadísticas usando transacción para consistencia
     const resultado = await db.transaction(async (connection) => {

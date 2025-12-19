@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
   id INT PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100) NOT NULL,
   email VARCHAR(150) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
   edad INT,
   activo BOOLEAN DEFAULT TRUE,
   fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -73,10 +74,10 @@ INSERT IGNORE INTO categorias (nombre, descripcion) VALUES
 ('Hogar', 'Artículos para el hogar'),
 ('Deportes', 'Equipamiento deportivo');
 
-INSERT IGNORE INTO usuarios (nombre, email, edad) VALUES
-('María González', 'maria@example.com', 28),
-('Carlos Rodríguez', 'carlos@example.com', 35),
-('Ana Martínez', 'ana@example.com', 24);
+INSERT IGNORE INTO usuarios (nombre, email, password, edad) VALUES
+('María González', 'maria@example.com', '$2b$10$u2SPj7F5pLNO54sXlSX8r.zCGlrIkGPjLG.CInAoZebizxWfqW25a', 28),
+('Carlos Rodríguez', 'carlos@example.com', '$2b$10$u2SPj7F5pLNO54sXlSX8r.zCGlrIkGPjLG.CInAoZebizxWfqW25a', 35),
+('Ana Martínez', 'ana@example.com', '$2b$10$u2SPj7F5pLNO54sXlSX8r.zCGlrIkGPjLG.CInAoZebizxWfqW25a', 24);
 
 INSERT IGNORE INTO productos (nombre, descripcion, precio, stock, categoria_id) VALUES
 ('Laptop Gaming', 'Laptop potente para gaming', 1299.99, 5, 1),
