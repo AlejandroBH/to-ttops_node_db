@@ -173,7 +173,7 @@ app.get("/productos", async (req, res) => {
     } = req.query;
 
     let sql = `
-      SELECT p.id, p.nombre, p.precio, p.stock, p.activo,
+      SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, p.activo,
              c.nombre AS categoria
       FROM productos p
       LEFT JOIN categorias c ON p.categoria_id = c.id
@@ -240,6 +240,7 @@ app.post("/productos", async (req, res) => {
       producto: {
         id: resultado.insertId,
         nombre,
+        descripcion,
         precio,
         stock: stock || 0,
         categoria_id,
