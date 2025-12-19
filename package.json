@@ -2,11 +2,12 @@
   "name": "ttops_node_db",
   "version": "1.0.0",
   "description": "",
-  "main": "init-db.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node init-db.js",
-    "dev": "nodemon init-db.js",
-    "test": "node test-api.js"
+    "start": "node app.js",
+    "init-db": "node db/init-db.js",
+    "dev": "nodemon app.js",
+    "test": "node test/test-api.js"
   },
   "keywords": [],
   "author": "Alejandro Barrera <alejandro91dark@hotmail.es>",

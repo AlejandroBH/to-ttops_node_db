@@ -84,6 +84,7 @@ async function probarAPI() {
       "❌ Error en las pruebas:",
       error.response?.data || error.message
     );
+    process.exit(1);
   }
 }
 
